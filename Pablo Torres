@@ -1,0 +1,76 @@
+#include <stdio.h>
+
+// Función para simular inversiones
+void simularInversion(double montoMensual, double totalMeses, double tasaInteres) {
+    printf ("-------------------TABLA DE INVERSION---------------------\n");
+
+    tasaInteres *= 0.001;
+
+    printf("Mes\tInversion al final del mes\n");
+    double inversion = 0;
+    for (int mes = 1; mes <= totalMeses; mes++) {
+        double intereses = inversion * tasaInteres;
+        inversion += montoMensual + intereses;
+        printf("%d\t%.2f\t%.2f\n", mes, inversion, intereses);
+    }
+}
+void simularCredito(double montoCredito, double tasaInteres, int numeroDeAnios) {
+    printf("------------------TABLA DE AMORTIZACION-------------------\n");
+    printf("Año\tInteres\t\tCuota mensual\tTotal de interes\n");
+
+    tasaInteres *= 0.001; 
+    double totalInteres = 0;
+
+    for (int anio = 1; anio <= numeroDeAnios; anio++) {
+        double cuotaAnual, interesAnual, saldo;
+
+        saldo = montoCredito;
+        interesAnual = 0;
+
+        for (int mes = 1; mes <= 12; mes++) {
+            double interesMensual = saldo * (tasaInteres / 12);
+            saldo = saldo + interesMensual - (cuotaAnual / 12);
+            interesAnual += interesMensual;
+        }
+
+        cuotaAnual = (montoCredito / numeroDeAnios);
+        totalInteres += interesAnual;
+
+        printf("%d\t%.2f\t\t%.2f\t\t%.2f\n", anio, interesAnual, cuotaAnual, totalInteres);
+    }
+}
+
+int main(int argc, char *argv[]) {
+    int opcion;
+    double monto, total, tasa;
+    int plazo;
+
+    printf("Seleccione una opcion:\n");
+    printf("1. Simulador de inversion\n");
+    printf("2. Simulador de credito\n");
+    scanf("%d", &opcion);
+
+    if (opcion == 1) {
+        printf("Ingrese el monto mensual:\n");
+        scanf("%lf", &monto);
+        printf("Ingrese el total de meses:\n");
+        scanf("%lf", &total);
+        printf("Ingrese el valor de la tasa de interes:\n");
+        scanf("%lf", &tasa);
+
+        simularInversion(monto, total, tasa);
+    } else if (opcion == 2) {
+        printf("Ingrese el monto de credito:\n");
+        scanf("%lf", &monto);
+        printf("Ingrese la tasa de interes anual (porcentaje):\n");
+        scanf("%lf", &tasa);
+        printf("Ingrese el numero de años:\n");
+        scanf("%d", &plazo);
+
+        simularCredito(monto, tasa, plazo);
+    } else {
+        printf("Opcion invalida. Por favor, seleccione 1 o 2.\n");
+    }
+
+    return 0;
+}
